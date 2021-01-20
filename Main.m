@@ -44,7 +44,10 @@ seuilContrast = 45;
 SeuilSelEtPoivre = 25000;
 
 imageHF = FiltreFrequentiel(pictureGray,seuilHF);
-[image,centreCercle] = IsolateCircle(imageHF,seuilContrast,SeuilSelEtPoivre);
+[imageCercle,centreCercle,rayon] = IsolateCircle(imageHF,seuilContrast,SeuilSelEtPoivre);
+
+%Enlève le fond (Background)
+pictureGray = RemoveBackground(pictureGray,centreCercle,rayon);
 
 %Isolation du troue
 [imageOutput,monCentroide] = IsolateHole(pictureGray,200);

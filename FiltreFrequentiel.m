@@ -11,7 +11,7 @@ F = fftshift(fft2(image{i}));
 
 %H = Masque
 [v,u]=meshgrid(1:N,1:M);
-H = double(sqrt((u-M/2).^2+(v-N/2).^2)) <seuil;
+H = double(sqrt((u-M/2).^2+(v-N/2).^2)) < seuil;
 H= ~H;
 %figure(3),imshow(H);
 G = F.*H;

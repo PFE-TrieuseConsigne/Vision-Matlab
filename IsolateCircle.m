@@ -1,4 +1,4 @@
-function [imageOutput,monCentroide] = IsolateCircle(image,seuilContrast,SeuilSelEtPoivre)
+function [imageOutput,monCentroide,rayon] = IsolateCircle(image,seuilContrast,SeuilSelEtPoivre)
 %ISOLATECIRCLE Summary of this function goes here
 % Fonction qui isole le cercle de la cannette et retourne le centre de
 % celui-ci, 
@@ -82,11 +82,15 @@ imageOutput{i} = imclose(imageOutput{i},se);
 %7- On aminci au maximum la région pour ensuite obtenir le centroide de la
 %forme
 imageOutput{i} = bwmorph(imageOutput{i},'thin',Inf);
-monCentroide = regionprops(logical(imageOutput{i}), 'Centroid').Centroid;
+monCentroide{i} = regionprops(imageOutput{i}, 'Centroid').Centroid;
 %7-End
 side = 4;
 figure(30+i),imshow(imageOutput{i},[]);
-r1 = drawrectangle('Position',[monCentroide(1)-(side/2) ,monCentroide(2)-(side/2) ,side,side],'Color','r');
+%r1 = drawrectangle('Position',[monCentroide(1)-(side/2) ,monCentroide(2)-(side/2) ,side,side],'Color','r');
+
+stats = regionprops(imageOutput{i},'PixelList');
+rayon{i} = min(sqrt((monCentroide{i}(1,1) - stats.PixelList(:,1)).^2+(monCentroide{i}(1,2)-stats.PixelList(:,2)).^2));
+
 end
 end
 
