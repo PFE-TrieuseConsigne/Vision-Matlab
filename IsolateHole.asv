@@ -23,18 +23,12 @@ holePixel(:,1) = uint16(stats(index).PixelList(:,2));
 holePixel(:,2) = uint16(stats(index).PixelList(:,1));
 pix = sub2ind(size(F{i}), holePixel(:,1), holePixel(:,2));
 Filtre = logical(zeros(size(F{i})));
-Filtre(pix) = 1;
+Filtre(pix) = F{i}(pix);
 
-se = strel('disk',10);
-Filtre = imclose(Filtre,se);
-
-
-F{i}(Filtre) = 0;
-stats = regionprops(Filtre,'Centroid');
 figure(1+i),imshow(F{i},[]);
-monCentroide{i} = stats(1).Centroid;
+monCentroide{i} = stats(index).Centroid;
 side = 4;
-r1 = drawrectangle('Position',[monCentroide{i}(1)-(side/2) ,monCentroide{i}(2)-(side/2) ,side,side],'Color','r');
+r1 = drawrectangle('Position',[monCentroide{i}(1)-(side/2) ,monCentroide{i}(2)-(side/2) ,side,side],'Color','b');
 r2 = drawrectangle('Position',[centreCercle{i}(1)-(side/2) ,centreCercle{i}(2)-(side/2) ,side,side],'Color','b');
 end
 
