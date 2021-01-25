@@ -41,7 +41,7 @@ chemain_dossier = 'C:\Users\sam_p\OneDrive - ETS\PFE\Vision\Picture_Bank\Picture
 %Isolation du diamètre extérieur
 seuilHF = 6;
 seuilContrast = 45;
-SeuilSelEtPoivre = 25000;
+SeuilSelEtPoivre = 175000;
 
 imageHF = FiltreFrequentiel(pictureGray,seuilHF);
 [imageCercle,centreCercle,rayon] = IsolateCircle(imageHF,seuilContrast,SeuilSelEtPoivre);
@@ -49,8 +49,11 @@ imageHF = FiltreFrequentiel(pictureGray,seuilHF);
 %Enlève le fond (Background)
 pictureGray = RemoveBackground(pictureGray,centreCercle,rayon);
 
+%
+pictureGray = RemoveMiddle(pictureGray,centreCercle,rayon);
+
 %Isolation du troue
-[imageOutput,monCentroide] = IsolateHole(pictureGray,200);
+[imageOutput,monCentroide] = IsolateHole(pictureGray,40,centreCercle);
 
 %1-END
 

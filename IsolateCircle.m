@@ -39,19 +39,17 @@ F{i} = (F{i} > seuilContrast);
 %4- On élimine tout le "sel" en utilisant les statistiques des régions
 %présente sur l'image
 stats = regionprops(F{i}, 'Area','PixelList');
-Filtre = zeros(size(F{i},1),size(F{i},2));
-
+Filtre = zeros(size(F{i}));
+FiltreTemp = zeros(size(F{i}));
     for i2 = 1: size(stats,1)
-        if (stats(i2).Area < SeuilSelEtPoivre)
-            for nb_pair= 1:size(stats(i2).PixelList(:,:),1)  %parcours de 1 à 6 les collomnes    
-                x = stats(i2).PixelList(nb_pair,1);
-                y = stats(i2).PixelList(nb_pair,2);
-                Filtre(y,x) = true;
-            end
+        if (stats(i2).Area > SeuilSelEtPoivre)
+          pix = sub2ind(size(F{i}), uint16(stats(i2).PixelList(:,2)), uint16(stats(i2).PixelList(:,1)));
+          FiltreTemp(pix) = 1;
+          Filtre = logical(Filtre + FiltreTemp);
         end
     end
-imageOutput{i}= F{i} - logical(Filtre);
-%figure(10+i),imshow(imageOutput{i},[]);
+imageOutput{i}= Filtre;
+figure(10+i),imshow(imageOutput{i},[]);
 %4- END
 
 x = 0;
@@ -65,12 +63,13 @@ Filtre = zeros(size(F{i},1),size(F{i},2));
             for nb_pair= 1:size(stats(i2).PixelList(:,:),1)      
                 x = stats(i2).PixelList(nb_pair,1);
                 y = stats(i2).PixelList(nb_pair,2);
-                Filtre(y,x) = true;
+                Filtre(y,x) = true;         
             end
+            %imageOutput{i}(stats(i2).PixelList) = 0;
         end
     end
 imageOutput{i}= logical(imageOutput{i} - logical(Filtre));
-%figure(100),imshow(imageOutput{i},[]);
+figure(100),imshow(imageOutput{i},[]);
 %5-END  
 
 %6- On applique une transformation morphologique de fermeture pour éliminer
@@ -85,8 +84,8 @@ imageOutput{i} = bwmorph(imageOutput{i},'thin',Inf);
 monCentroide{i} = regionprops(imageOutput{i}, 'Centroid').Centroid;
 %7-End
 side = 4;
-figure(30+i),imshow(imageOutput{i},[]);
-%r1 = drawrectangle('Position',[monCentroide(1)-(side/2) ,monCentroide(2)-(side/2) ,side,side],'Color','r');
+%figure(30+i),imshow(imageOutput{i},[]);
+%r1 = drawrectangle('Position',[monCentroide{i}(1)-(side/2) ,monCentroide{i}(2)-(side/2) ,side,side],'Color','r');
 
 stats = regionprops(imageOutput{i},'PixelList');
 rayon{i} = min(sqrt((monCentroide{i}(1,1) - stats.PixelList(:,1)).^2+(monCentroide{i}(1,2)-stats.PixelList(:,2)).^2));
