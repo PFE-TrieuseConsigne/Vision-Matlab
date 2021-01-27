@@ -1,7 +1,10 @@
 function [imageOutput,monCentroide] = IsolateHole(image,seuilContrast,centreCercle)
 %ISOLATEHOLE Summary of this function goes here
-%   Detailed explanation goes here
-for i=1:length(image)
+%   Fonction qui isole le centre de la canette avec son troue, retourne le
+%   centroide du trou 
+
+
+for i=1:length(image)    
 F{i} = Gradiant(image{i});
 F{i} = imfilter(F{i}, ones(4)/16, 'circular');
 
@@ -18,7 +21,8 @@ index = NaN;
         end        
   end
  %
-F{i}=~F{i};
+ 
+%Crée un filtre de la région en question 
 holePixel(:,1) = uint16(stats(index).PixelList(:,2));
 holePixel(:,2) = uint16(stats(index).PixelList(:,1));
 pix = sub2ind(size(F{i}), holePixel(:,1), holePixel(:,2));
@@ -27,15 +31,22 @@ Filtre(pix) = 1;
 
 se = strel('disk',10);
 Filtre = imclose(Filtre,se);
+%
 
-
-F{i}(Filtre) = 0;
+%Détermine le centroid du trou
 stats = regionprops(Filtre,'Centroid');
-figure(1+i),imshow(F{i},[]);
+%figure(i),imshow(F{i},[]);
 monCentroide{i} = stats(1).Centroid;
 side = 4;
 r1 = drawrectangle('Position',[monCentroide{i}(1)-(side/2) ,monCentroide{i}(2)-(side/2) ,side,side],'Color','r');
 r2 = drawrectangle('Position',[centreCercle{i}(1)-(side/2) ,centreCercle{i}(2)-(side/2) ,side,side],'Color','b');
+
+image{i}(Filtre) = 0;
+imageOutput{i} = image{i};
+%figure(30+i),imshow(imageOutput{i},[]);
+clear holePixel;
+clear r1;
+clear r2;
 end
 
 

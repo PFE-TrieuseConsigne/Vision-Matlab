@@ -6,7 +6,7 @@
 %2- Sachant l'alignement, on isole les parties de droite et gauche où il est écrit "Québec" et "Consignable" 
 %On effectue des traitements sur ces nouvelle zone pour mieux faire sortir
 %les gravures
-%3- 
+%3- On sauvegarde les images dans un dossier avec la variable saveFile
 %
 
 %****************Définition des variables publique******************
@@ -25,14 +25,16 @@ clc;
 clear;
 
 %Variable que l'on peut modifier
-nb_image = 1;
+%nb_image = 1;
 chemain_dossier = 'C:\Users\sam_p\OneDrive - ETS\PFE\Vision\Picture_Bank\Picture_Test';
+saveFile = 'E:\École\ETS\PFE\test\Output test\';
+
 
 %load les photos dans un array, un en noir et blanc, l'autre en couleur
     [pictureGray,picture] = GetPicture(chemain_dossier);       
 %Selectionne aléatoirement un nombre (nb_image) de photo pour affichage (pour le
 %débuggage)
-    [selectedPicture,pictureNumber] = SelectRandomPicture(nb_image,pictureGray);
+    %[selectedPicture,pictureNumber] = SelectRandomPicture(nb_image,pictureGray);
 %Affiche les images sélectionné aléatoirement
     %ShowWithSubPlot(selectedPicture,pictureNumber)     
 
@@ -46,6 +48,7 @@ SeuilSelEtPoivre = 175000;
 imageHF = FiltreFrequentiel(pictureGray,seuilHF);
 [imageCercle,centreCercle,rayon] = IsolateCircle(imageHF,seuilContrast,SeuilSelEtPoivre);
 
+
 %Enlève le fond (Background)
 pictureGray = RemoveBackground(pictureGray,centreCercle,rayon);
 
@@ -53,7 +56,10 @@ pictureGray = RemoveBackground(pictureGray,centreCercle,rayon);
 pictureGray = RemoveMiddle(pictureGray,centreCercle,rayon);
 
 %Isolation du troue
-[imageOutput,monCentroide] = IsolateHole(pictureGray,40,centreCercle);
+[pictureGray,centreTrou] = IsolateHole(pictureGray,40,centreCercle);
+
+%Alligmenet de la cannette
+[pictureGray] = AlignPicture(pictureGray,centreCercle,centreTrou);
 
 %1-END
 
@@ -64,13 +70,12 @@ pictureGray = RemoveMiddle(pictureGray,centreCercle,rayon);
 %Rotation de la zone de lettrage
 %$$$À FAIRE$$$
 
-%Rotation de la zone de lettrage
-%$$$À FAIRE$$$
-
 %Traitement des zones de lettrage
 %$$$À FAIRE$$$
 
 %2-END
 
-%imshow(image{1},[]);
+
+SaveImage(pictureGray,saveFile);
+
 

@@ -49,7 +49,7 @@ FiltreTemp = zeros(size(F{i}));
         end
     end
 imageOutput{i}= Filtre;
-figure(10+i),imshow(imageOutput{i},[]);
+%figure(10+i),imshow(imageOutput{i},[]);
 %4- END
 
 x = 0;
@@ -69,7 +69,7 @@ Filtre = zeros(size(F{i},1),size(F{i},2));
         end
     end
 imageOutput{i}= logical(imageOutput{i} - logical(Filtre));
-figure(100),imshow(imageOutput{i},[]);
+%figure(100),imshow(imageOutput{i},[]);
 %5-END  
 
 %6- On applique une transformation morphologique de fermeture pour éliminer
