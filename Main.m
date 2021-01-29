@@ -28,7 +28,7 @@ clear;
 %nb_image = 1;
 ProgramFile = 'E:\École\ETS\PFE\Vision-Matlab';                                     %Répertoire où le code MATLAB est sauvegarder (seulement utile lorsqu'on roule le code avec MATLAB?)
 PictureFile = 'C:\Users\sam_p\OneDrive - ETS\PFE\Vision\Picture_Bank\Picture_Test'; %Répertoire où l'on stock les images à traiter
-SaveFile = 'E:\École\ETS\PFE\test\Output test\';                                    %Répertoire où l'on sauvegardera le résultat final
+SaveFile = 'C:\Users\sam_p\OneDrive - ETS\PFE\Vision\ImageOuput';                   %Répertoire où l'on sauvegardera le résultat final
 FiltreFile = 'C:\Users\sam_p\OneDrive - ETS\PFE\Vision\FiltreZoneText';             %Répertoire des filtres pour isoler les zones de textes
 
 %load les photos dans un array, un en noir et blanc, l'autre en couleur
@@ -62,7 +62,7 @@ pictureGray = RemoveMiddle(pictureGray,centreCercle,rayon);
 %Isolation du troue causé par la goupille
 [pictureGray,centreTrou] = IsolateHole(pictureGray,40,centreCercle);
 
-%Alligmenet de la cannette et centrage
+%Aligmenet de la cannette et centrage
 [pictureGray] = AlignPicture(pictureGray,centreCercle,centreTrou);
 %1-END
 
@@ -70,7 +70,7 @@ pictureGray = RemoveMiddle(pictureGray,centreCercle,rayon);
 
 %2- Sachant l'alignement, on isole les parties de droite et gauche où il est écrit "Québec" et "Consignable" 
 %Isolation de la zone de lettrage
-%$$$À FAIRE$$$
+[pictureGray] = IsolateTextZone(pictureGray,rayon,FiltreG);
 
 %Rotation de la zone de lettrage
 %$$$À FAIRE$$$

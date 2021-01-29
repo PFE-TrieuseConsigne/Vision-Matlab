@@ -38,8 +38,8 @@ stats = regionprops(Filtre,'Centroid');
 %figure(i),imshow(F{i},[]);
 monCentroide{i} = stats(1).Centroid;
 side = 4;
-r1 = drawrectangle('Position',[monCentroide{i}(1)-(side/2) ,monCentroide{i}(2)-(side/2) ,side,side],'Color','r');
-r2 = drawrectangle('Position',[centreCercle{i}(1)-(side/2) ,centreCercle{i}(2)-(side/2) ,side,side],'Color','b');
+%r1 = drawrectangle('Position',[monCentroide{i}(1)-(side/2) ,monCentroide{i}(2)-(side/2) ,side,side],'Color','r');
+%r2 = drawrectangle('Position',[centreCercle{i}(1)-(side/2) ,centreCercle{i}(2)-(side/2) ,side,side],'Color','b');
 
 image{i}(Filtre) = 0;
 imageOutput{i} = image{i};

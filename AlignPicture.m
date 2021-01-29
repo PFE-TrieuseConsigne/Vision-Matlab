@@ -16,7 +16,7 @@ function [imageOutput] = AlignPicture(image,centreCercle,centreTroue)
         
         image{i} = imtranslate(image{i},[distX,distY]);
         %figure(i),imshow(image{i},[]);
-        r1 = drawrectangle('Position',[centreCercle{i}(1,1)+distX-(4/2) ,centreCercle{i}(1,2)+distY-(4/2) ,4,4],'Color','r');
+        %r1 = drawrectangle('Position',[centreCercle{i}(1,1)+distX-(4/2) ,centreCercle{i}(1,2)+distY-(4/2) ,4,4],'Color','r');
         
         centreTroue{i}(1,1) = centreTroue{i}(1,1) + distX;
         centreTroue{i}(1,2) = centreTroue{i}(1,2) + distY;
@@ -27,7 +27,7 @@ function [imageOutput] = AlignPicture(image,centreCercle,centreTroue)
         
         
         imageOutput{i} = imrotate(image{i},90+angleRot);
-        figure(10+i),imshow(imageOutput{i},[]);
+        %figure(10+i),imshow(imageOutput{i},[]);
 
     end
 end
