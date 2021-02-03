@@ -6,7 +6,7 @@ function [image_Output] = FiltreFrequentiel(image,seuil)
 for i = 1:length(image)
 %figure(2),imshow(image{i});
 F = fftshift(fft2(image{i}));
-%figure(4),imshow(log(abs(F)+1),[]);
+%figure(i+99),imshow(log(abs(F)+1),[]);
 [M,N,~] = size(image{i});
 
 %H = Masque

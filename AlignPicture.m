@@ -26,8 +26,11 @@ function [imageOutput] = AlignPicture(image,centreCercle,centreTroue)
         angleRot = rad2deg(tan(double(distY)/double(distX)));
         
         
-        imageOutput{i} = imrotate(image{i},90+angleRot);
-        %figure(10+i),imshow(imageOutput{i},[]);
+        imageOutput{i} = imrotate(image{i},90+angleRot, 'nearest','crop');
+        figure(10+i),imshow(imageOutput{i},[]);
 
+        
+        
+        
     end
 end

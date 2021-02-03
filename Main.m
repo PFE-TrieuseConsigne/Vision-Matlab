@@ -21,21 +21,31 @@
 %selectedPicture = Les photos sélectionné aléatoirement 
 
 %********MAIN START********
-clc;
-clear;
+%clc;
+%clear;
+
+%testingIsolement = true;
+testingIsolement = false;
 
 %Variable que l'on peut modifier
 %nb_image = 1;
+TestingWorkspaceFile = 'C:\Users\sam_p\OneDrive - ETS\PFE\Vision\Workspace (debugging)'%Répertoire de débuggage pour sauver du temps lorsque testingIsolement == false
 ProgramFile = 'E:\École\ETS\PFE\Vision-Matlab';                                     %Répertoire où le code MATLAB est sauvegarder (seulement utile lorsqu'on roule le code avec MATLAB?)
 PictureFile = 'C:\Users\sam_p\OneDrive - ETS\PFE\Vision\Picture_Bank\Picture_Test'; %Répertoire où l'on stock les images à traiter
 SaveFile = 'C:\Users\sam_p\OneDrive - ETS\PFE\Vision\ImageOuput';                   %Répertoire où l'on sauvegardera le résultat final
 FiltreFile = 'C:\Users\sam_p\OneDrive - ETS\PFE\Vision\FiltreZoneText';             %Répertoire des filtres pour isoler les zones de textes
 
-%load les photos dans un array, un en noir et blanc, l'autre en couleur
-    [pictureGray,picture] = GetPicture(PictureFile);
+
+
+if (testingIsolement)
+
     
+%load les photos dans un array, un en noir et blanc, l'autre en couleur
+[pictureGray,picture] = GetPicture(PictureFile);
+ 
 %Load les filtres pour les zones de texte
-[FiltreG] = GetFiltre(FiltreFile);
+[Filtre] = GetFiltre(FiltreFile);    
+
 %Selectionne aléatoirement un nombre (nb_image) de photo pour affichage (pour le
 %débuggage)
     %[selectedPicture,pictureNumber] = SelectRandomPicture(nb_image,pictureGray);
@@ -70,17 +80,20 @@ pictureGray = RemoveMiddle(pictureGray,centreCercle,rayon);
 
 %2- Sachant l'alignement, on isole les parties de droite et gauche où il est écrit "Québec" et "Consignable" 
 %Isolation de la zone de lettrage
-[pictureGray] = IsolateTextZone(pictureGray,rayon,FiltreG);
+[pictureGray,Filtre] = IsolateTextZone(pictureGray,rayon,Filtre);
+else
+   load('C:\Users\sam_p\OneDrive - ETS\PFE\Vision\Workspace (debugging)\31Jan2021.mat');
+end
+
 
 %Rotation de la zone de lettrage
 %$$$À FAIRE$$$
 
 %Traitement des zones de lettrage
-%$$$À FAIRE$$$
+[pictureGray] = zoneTextTraitement(pictureGray,Filtre);
 
 %2-END
 
 
-SaveImage(pictureGray,SaveFile,ProgramFile);
-
+%SaveImage(pictureGray,SaveFile,ProgramFile);
 
