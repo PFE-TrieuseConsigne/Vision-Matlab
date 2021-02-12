@@ -8,12 +8,10 @@ for i=1:length(pictureGray)
         x = round(rand);
         if(x ==1)
         pictureOutput{k+(i-1)*nbGenerated} = Barrel(pictureGray{i});
+
         else
         pictureOutput{k+(i-1)*nbGenerated} = PinCushion(pictureGray{i}); 
-        end
-        
-        %Appliquer des rotations
-        
+        end        
     end
 end
 end

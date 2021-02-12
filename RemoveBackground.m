@@ -7,7 +7,7 @@ for i=1:length(image)
 
 [M,N,~] = size(image{i});
 [v,u]=meshgrid(1:N,1:M);
-H = double(sqrt((u-centreCercle{i}(2)).^2+(v-centreCercle{i}(1)).^2)) < rayon{i}*0.75;
+H = double(sqrt((u-centreCercle{i}(2)).^2+(v-centreCercle{i}(1)).^2)) < rayon{i}*1.15;
 
 %figure(150+i),imshow(H);
 imageOutput{i} = double(image{i}).*H; 

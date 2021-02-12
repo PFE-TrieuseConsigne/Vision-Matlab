@@ -3,7 +3,7 @@ function [imageOutput] = AlignPicture(image,centreCercle,centreTroue)
 
 %
 
-    for i=1:length(image)
+    for i=1:length(image)     
         image{i} = uint8(image{i});
         
         centreX = size(image{i},2)/2;
@@ -23,10 +23,15 @@ function [imageOutput] = AlignPicture(image,centreCercle,centreTroue)
         distX = int16(centreX - centreTroue{i}(1,1));
         distY = int16(centreY - centreTroue{i}(1,2));
         
+        if(distY >distX)
         angleRot = rad2deg(tan(double(distY)/double(distX)));
-        
-        
         imageOutput{i} = imrotate(image{i},90+angleRot, 'nearest','crop');
+        else
+        angleRot = rad2deg(tan(double(distX)/double(distY)));
+        imageOutput{i} = imrotate(image{i},angleRot, 'nearest','crop');
+        end
+        
+        
         figure(10+i),imshow(imageOutput{i},[]);
 
         

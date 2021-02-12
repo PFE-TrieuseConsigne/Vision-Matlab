@@ -21,15 +21,15 @@
 %selectedPicture = Les photos sélectionné aléatoirement 
 
 %********MAIN START********
-%clc;
-%clear;
+clc;
+clear;
 
-%testingIsolement = true;
-testingIsolement = false;
+testingIsolement = true;
+%testingIsolement = false;
 
 %Variable que l'on peut modifier
 %nb_image = 1;
-TestingWorkspaceFile = 'C:\Users\sam_p\OneDrive - ETS\PFE\Vision\Workspace (debugging)'%Répertoire de débuggage pour sauver du temps lorsque testingIsolement == false
+%TestingWorkspaceFile = 'C:\Users\sam_p\OneDrive - ETS\PFE\Vision\Workspace (debugging)'%Répertoire de débuggage pour sauver du temps lorsque testingIsolement == false
 ProgramFile = 'E:\École\ETS\PFE\Vision-Matlab';                                     %Répertoire où le code MATLAB est sauvegarder (seulement utile lorsqu'on roule le code avec MATLAB?)
 PictureFile = 'C:\Users\sam_p\OneDrive - ETS\PFE\Vision\Picture_Bank\Picture_Test'; %Répertoire où l'on stock les images à traiter
 SaveFile = 'C:\Users\sam_p\OneDrive - ETS\PFE\Vision\ImageOuput';                   %Répertoire où l'on sauvegardera le résultat final
@@ -41,8 +41,8 @@ if (testingIsolement)
 
     
 %load les photos dans un array, un en noir et blanc, l'autre en couleur
-[pictureGray,picture] = GetPicture(PictureFile);
- 
+[pictureGray] = GetPictureGray(PictureFile);
+%[pictureGray,picture] = GetPicture(PictureFile);
 %Load les filtres pour les zones de texte
 [Filtre] = GetFiltre(FiltreFile);    
 
@@ -56,11 +56,11 @@ if (testingIsolement)
 %1-On aligne la canette avec le diamètre extérieur et le ? troue ?    
 %Isolation du diamètre extérieur
 seuilHF = 6;
-seuilContrast = 45;
-SeuilSelEtPoivre = 175000;
+seuilContrast = 14;
+SeuilSelEtPoivre = 30000;
 
 imageHF = FiltreFrequentiel(pictureGray,seuilHF);
-[imageCercle,centreCercle,rayon] = IsolateCircle(imageHF,seuilContrast,SeuilSelEtPoivre);
+[imageCercle,centreCercle,rayon] = IsolateCircle(pictureGray,seuilContrast,SeuilSelEtPoivre);
 
 
 %Enlève le fond (Background)
@@ -70,7 +70,7 @@ pictureGray = RemoveBackground(pictureGray,centreCercle,rayon);
 pictureGray = RemoveMiddle(pictureGray,centreCercle,rayon);
 
 %Isolation du troue causé par la goupille
-[pictureGray,centreTrou] = IsolateHole(pictureGray,40,centreCercle);
+[pictureGray,centreTrou] = IsolateHole(pictureGray,20,centreCercle);
 
 %Aligmenet de la cannette et centrage
 [pictureGray] = AlignPicture(pictureGray,centreCercle,centreTrou);
@@ -80,7 +80,10 @@ pictureGray = RemoveMiddle(pictureGray,centreCercle,rayon);
 
 %2- Sachant l'alignement, on isole les parties de droite et gauche où il est écrit "Québec" et "Consignable" 
 %Isolation de la zone de lettrage
+%***********À Retravailler
 [pictureGray,Filtre] = IsolateTextZone(pictureGray,rayon,Filtre);
+%*******
+
 else
    load('C:\Users\sam_p\OneDrive - ETS\PFE\Vision\Workspace (debugging)\31Jan2021.mat');
 end

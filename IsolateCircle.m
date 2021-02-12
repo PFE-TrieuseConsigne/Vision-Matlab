@@ -20,22 +20,27 @@ function [imageOutput,monCentroide,rayon] = IsolateCircle(image,seuilContrast,Se
 
 
 for i=1:length(image)
-%1- On applique un filtre de gradiant en x et en y,
-F{i} = Gradiant(image{i});
-%1- END
+
 
 %2- Filtre médiant et moyennant pour réduire l'apparition du "sel" pour plus
 %tard
-%figure(10), imshow(image_magn,[]);
-F{i} = imfilter(F{i}, ones(4)/16, 'symmetric');
-F{i} = medfilt2(F{i},[6,6]);
+
+F{i} = imfilter(image{i}, ones(3)/9, 'symmetric');
+F{i} = medfilt2(F{i},[36,36]);
 %2- END
+%figure(i), imshow(F{i},[]);
+%1- On applique un filtre de gradiant en x et en y,
+F{i} = imgradient(F{i});
+%1- END
+%figure(i+10), imshow(F{i},[]);
 
 %3- On élimine la plus part de des faibles intensités en appliquant un contraste (seuilContrast)
 F{i} = (F{i} > seuilContrast);                  
-%figure(11),imshow(image_C2);
+%figure(i+20),imshow(F{i});
 %3- END
-
+se = strel('disk',10);
+F{i} = imclose(F{i},se);
+%figure(30),imshow(F{i});
 %4- On élimine tout le "sel" en utilisant les statistiques des régions
 %présente sur l'image
 stats = regionprops(F{i}, 'Area','PixelList');
@@ -49,17 +54,25 @@ FiltreTemp = zeros(size(F{i}));
         end
     end
 imageOutput{i}= Filtre;
-%figure(10+i),imshow(imageOutput{i},[]);
+%figure(20+i),imshow(imageOutput{i},[]);
 %4- END
 
+se = strel('disk',2);
+imageOutput{i} = imdilate(imageOutput{i},se);
+
+%figure(40+i),imshow(imageOutput{i},[]);
 x = 0;
 y = 0;
 %5- On élimine toutes les régions qui sont trop excentrique pour ne laisser que la région qui ressemble le plus à un cercle 
-stats = regionprops(logical(imageOutput{i}), 'Centroid','Eccentricity', 'PixelList');
+stats = regionprops(logical(imageOutput{i}), 'Centroid','Eccentricity','Area','PixelList');
 Filtre = zeros(size(F{i},1),size(F{i},2));
+for k = 1: size(stats,1)
+myMinArray(k) =  stats(k).Eccentricity;
+end
 
     for i2 = 1: size(stats,1)
-        if (stats(i2).Eccentricity > min(stats(1).Eccentricity))
+        
+        if (stats(i2).Eccentricity == min(myMinArray))
             for nb_pair= 1:size(stats(i2).PixelList(:,:),1)      
                 x = stats(i2).PixelList(nb_pair,1);
                 y = stats(i2).PixelList(nb_pair,2);
@@ -68,8 +81,8 @@ Filtre = zeros(size(F{i},1),size(F{i},2));
             %imageOutput{i}(stats(i2).PixelList) = 0;
         end
     end
-imageOutput{i}= logical(imageOutput{i} - logical(Filtre));
-%figure(100),imshow(imageOutput{i},[]);
+imageOutput{i}= Filtre;
+%figure(i+50),imshow(imageOutput{i},[]);
 %5-END  
 
 %6- On applique une transformation morphologique de fermeture pour éliminer
@@ -84,7 +97,7 @@ imageOutput{i} = bwmorph(imageOutput{i},'thin',Inf);
 monCentroide{i} = regionprops(imageOutput{i}, 'Centroid').Centroid;
 %7-End
 side = 4;
-%figure(30+i),imshow(imageOutput{i},[]);
+%figure(60+i),imshow(imageOutput{i},[]);
 %r1 = drawrectangle('Position',[monCentroide{i}(1)-(side/2) ,monCentroide{i}(2)-(side/2) ,side,side],'Color','r');
 
 stats = regionprops(imageOutput{i},'PixelList');

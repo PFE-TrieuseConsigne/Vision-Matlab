@@ -4,9 +4,13 @@
 
 
 %
-nbGenerated = 9; %nombre de photo généré de plus par photo de base
+nbGenerated = 1; %nombre de photo généré de plus par photo de base
 %
 PictureBaseFile = 'C:\Users\sam_p\OneDrive - ETS\PFE\Vision\Picture_Bank\BaseBank';
+SaveFile = 'C:\Users\sam_p\OneDrive - ETS\PFE\Vision\Picture_Bank\PictureBank_02-08-20201';
+ProgramFile = 'C:\Users\sam_p\OneDrive - ETS\PFE\Vision\Code';
 [pictureGray,picture] = GetPicture(PictureBaseFile);
 
-pictureGray = GenerateTransformedPicture(pictureGray, nbGenerated);
+generatedPicture = GenerateTransformedPicture(pictureGray, nbGenerated);
+SaveGeneratedImage(pictureGray,generatedPicture,SaveFile,ProgramFile);
+

@@ -28,7 +28,7 @@ imageOutput = imwarp(I,tform,'FillValues',fill);
 Filtre = ~imageOutput;
 stats = regionprops(Filtre,'pixellist','area');
 
-imageOutput(Filtre) = 255;
+imageOutput(Filtre) = 162;
 
 %figure(6),imshow(imageOutput)
 %title('Barrel');
