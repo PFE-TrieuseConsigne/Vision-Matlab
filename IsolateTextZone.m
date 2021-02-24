@@ -1,13 +1,7 @@
-function [imageOutput,newFiltre] = IsolateTextZone(image,rayon,FiltreBase)
+function [imageOutput,newFiltre] = IsolateTextZone(image,rayon,FiltreBase,filtreHole)
 %ISOLATETEXTZONE Summary of this function goes here
 %   Detailed explanation goes here
-RayonBase = 1190.78268019979;
-
-se = strel('disk',10);
-for i1 = 1:length(FiltreBase)
-        FiltreBase{i1} = imclose(logical(FiltreBase{i1}),se);        
-end
-
+RayonBase = 325*1.20;
 filtreNb = 1;
 %myfigure = 1;
 for i2 = 1:length(image)
@@ -15,7 +9,7 @@ for i2 = 1:length(image)
 
         ratio = rayon{i2}/RayonBase;
     
-        FiltreResized = imresize(FiltreBase{i3},ratio);
+        FiltreResized = logical(imresize(FiltreBase{i3},ratio));
         [Nf,Mf,~] = size(FiltreResized);
         [Ni,Mi,~] = size(image{i2});
         DeltaN = int16((Ni-Nf)/2);
@@ -26,7 +20,7 @@ for i2 = 1:length(image)
             newFiltre{filtreNb}(DeltaN+1:rows + DeltaN, DeltaM+1:columns+DeltaM, 1) = FiltreResized;  
         end
         clear FiltreResized;
-        
+        newFiltre{filtreNb} = logical(newFiltre{filtreNb}) - logical(filtreHole{i2});
         imageOutput{i2,i3} =  image{i2}.*uint8(newFiltre{filtreNb});
         
         %myfigure = myfigure + 1;

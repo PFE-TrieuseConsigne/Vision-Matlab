@@ -5,7 +5,7 @@ if ~isfolder(myFolder)
   uiwait(warndlg(errorMessage));
   return;
 end
-filePattern = fullfile(myFolder, '*.jpg');
+filePattern = fullfile(myFolder, '*.png');
 jpegFiles = dir(filePattern);
 
 for k = 1:length(jpegFiles)

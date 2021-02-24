@@ -24,8 +24,7 @@
 clc;
 clear;
 
-testingIsolement = true;
-%testingIsolement = false;
+
 
 %Variable que l'on peut modifier
 %nb_image = 1;
@@ -35,16 +34,11 @@ PictureFile = 'C:\Users\sam_p\OneDrive - ETS\PFE\Vision\Picture_Bank\Picture_Tes
 SaveFile = 'C:\Users\sam_p\OneDrive - ETS\PFE\Vision\ImageOuput';                   %Répertoire où l'on sauvegardera le résultat final
 FiltreFile = 'C:\Users\sam_p\OneDrive - ETS\PFE\Vision\FiltreZoneText';             %Répertoire des filtres pour isoler les zones de textes
 
-
-
-if (testingIsolement)
-
-    
+   
 %load les photos dans un array, un en noir et blanc, l'autre en couleur
 [pictureGray] = GetPictureGray(PictureFile);
 %[pictureGray,picture] = GetPicture(PictureFile);
-%Load les filtres pour les zones de texte
-[Filtre] = GetFiltre(FiltreFile);    
+ 
 
 %Selectionne aléatoirement un nombre (nb_image) de photo pour affichage (pour le
 %débuggage)
@@ -59,7 +53,7 @@ seuilHF = 6;
 seuilContrast = 14;
 SeuilSelEtPoivre = 30000;
 
-imageHF = FiltreFrequentiel(pictureGray,seuilHF);
+%imageHF = FiltreFrequentiel(pictureGray,seuilHF);
 [imageCercle,centreCercle,rayon] = IsolateCircle(pictureGray,seuilContrast,SeuilSelEtPoivre);
 
 
@@ -67,36 +61,29 @@ imageHF = FiltreFrequentiel(pictureGray,seuilHF);
 pictureGray = RemoveBackground(pictureGray,centreCercle,rayon);
 
 %Enlève le milieu de la cannette
-pictureGray = RemoveMiddle(pictureGray,centreCercle,rayon);
+%pictureGray = RemoveMiddle(pictureGray,centreCercle,rayon);
 
 %Isolation du troue causé par la goupille
-[pictureGray,centreTrou] = IsolateHole(pictureGray,20,centreCercle);
+[centreTrou,filtreHole] = IsolateHole(RemoveMiddle(pictureGray,centreCercle,rayon),20,centreCercle);
 
 %Aligmenet de la cannette et centrage
-[pictureGray] = AlignPicture(pictureGray,centreCercle,centreTrou);
+[pictureGray,filtreHole] = AlignPicture(pictureGray,centreCercle,centreTrou,filtreHole);
 %1-END
 
 
 
 %2- Sachant l'alignement, on isole les parties de droite et gauche où il est écrit "Québec" et "Consignable" 
 %Isolation de la zone de lettrage
-%***********À Retravailler
-[pictureGray,Filtre] = IsolateTextZone(pictureGray,rayon,Filtre);
-%*******
-
-else
-   load('C:\Users\sam_p\OneDrive - ETS\PFE\Vision\Workspace (debugging)\31Jan2021.mat');
-end
-
-
-%Rotation de la zone de lettrage
-%$$$À FAIRE$$$
+%Load les filtres pour les zones de texte
+[Filtre] = GetFiltre(FiltreFile);   
+[pictureGray,Filtre] = IsolateTextZone(pictureGray,rayon,Filtre,filtreHole);
 
 %Traitement des zones de lettrage
-[pictureGray] = zoneTextTraitement(pictureGray,Filtre);
+%voir rehaussement par laplacien cours sem 3
+[pictureGray] = ZoneTextTraitement(pictureGray,Filtre);
 
 %2-END
 
-
-%SaveImage(pictureGray,SaveFile,ProgramFile);
-
+%3- Sauvegarde des images
+SaveImage(pictureGray,SaveFile,ProgramFile);
+%3-End

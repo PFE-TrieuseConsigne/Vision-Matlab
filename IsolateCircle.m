@@ -3,18 +3,18 @@ function [imageOutput,monCentroide,rayon] = IsolateCircle(image,seuilContrast,Se
 % Fonction qui isole le cercle de la cannette et retourne le centre de
 % celui-ci, 
 
-%Fonctionnment
-%1- On applique un filtre de gradiant en x et en y,
-%2- Filtre médiant et moyennant pour réduire l'apparition du "sel" pour plus
-%tard
-%3- On élimine la plus part de des faibles intensités en appliquant un contraste (seuilContrast)
-%4- On élimine tout le "sel" en utilisant les statistiques des régions
-%présente sur l'image
-%5- On élimine toutes les régions qui sont trop excentrique pour ne laisser que la région qui ressemble le plus à un cercle 
-%6- On applique une transformation morphologique de fermeture pour éliminer
-%les "gap" entre les pixels
-%7- On aminci au maximum la région pour ensuite obtenir le centroide de la
-%forme
+% Fonctionnment
+% 1- Filtre médiant et moyennant pour réduire l'apparition du "sel" pour plus
+% tard
+% 2- On applique un filtre de gradient en x et en y,
+% 3- On élimine la plupart de des faibles intensités en appliquant un contraste (seuilContrast)
+% 4- On élimine tout le "sel" en utilisant les statistiques des régions
+% présente sur l'image
+% 5- On élimine toutes les régions qui sont trop excentrique pour ne laisser que la région qui ressemble le plus à un cercle 
+% 6- On applique une transformation morphologique de fermeture pour éliminer
+% les "gap" entre les pixels
+% 7- On aminci au maximum la région pour ensuite obtenir le centroide de la
+% forme
 %   Detailed explanation goes here
 
 
@@ -22,17 +22,16 @@ function [imageOutput,monCentroide,rayon] = IsolateCircle(image,seuilContrast,Se
 for i=1:length(image)
 
 
-%2- Filtre médiant et moyennant pour réduire l'apparition du "sel" pour plus
+%1- Filtre médiant et moyennant pour réduire l'apparition du "sel" pour plus
 %tard
-
 F{i} = imfilter(image{i}, ones(3)/9, 'symmetric');
 F{i} = medfilt2(F{i},[36,36]);
-%2- END
-%figure(i), imshow(F{i},[]);
-%1- On applique un filtre de gradiant en x et en y,
-F{i} = imgradient(F{i});
 %1- END
-%figure(i+10), imshow(F{i},[]);
+%figure(i), imshow(F{i},[]);
+%2- On applique un filtre de gradiant en x et en y,
+F{i} = imgradient(F{i});
+%2- END
+%figure(i+10), imshow(F{i},[0,100]);
 
 %3- On élimine la plus part de des faibles intensités en appliquant un contraste (seuilContrast)
 F{i} = (F{i} > seuilContrast);                  
@@ -81,13 +80,14 @@ end
             %imageOutput{i}(stats(i2).PixelList) = 0;
         end
     end
+clear myMinArray
 imageOutput{i}= Filtre;
 %figure(i+50),imshow(imageOutput{i},[]);
 %5-END  
 
 %6- On applique une transformation morphologique de fermeture pour éliminer
 %les "gap" entre les pixels
-se = strel('disk',50);
+se = strel('disk',150);
 imageOutput{i} = imclose(imageOutput{i},se);
 %6- End
 
@@ -98,10 +98,10 @@ monCentroide{i} = regionprops(imageOutput{i}, 'Centroid').Centroid;
 %7-End
 side = 4;
 %figure(60+i),imshow(imageOutput{i},[]);
-%r1 = drawrectangle('Position',[monCentroide{i}(1)-(side/2) ,monCentroide{i}(2)-(side/2) ,side,side],'Color','r');
+r1 = drawrectangle('Position',[monCentroide{i}(1)-(side/2) ,monCentroide{i}(2)-(side/2) ,side,side],'Color','r');
 
 stats = regionprops(imageOutput{i},'PixelList');
-rayon{i} = min(sqrt((monCentroide{i}(1,1) - stats.PixelList(:,1)).^2+(monCentroide{i}(1,2)-stats.PixelList(:,2)).^2));
+rayon{i} = max(sqrt((monCentroide{i}(1,1) - stats.PixelList(:,1)).^2+(monCentroide{i}(1,2)-stats.PixelList(:,2)).^2));
 
 end
 end

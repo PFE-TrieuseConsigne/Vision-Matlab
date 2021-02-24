@@ -15,10 +15,6 @@ for k = 1:numel(GeneratedImage)
   imwrite( GeneratedImage{k}, fileName);  
 end
 
-
-
-
-
 cd(ProgramFile)
 end
 
