@@ -1,4 +1,4 @@
-function [monCentroide,filtreHole] = IsolateHole(image,seuilContrast,centreCercle)
+function [monCentroide,filtreHole] = IsolateHole(image,rayon,centreCercle)
 %ISOLATEHOLE Summary of this function goes here
 %   Fonction qui isole le centre de la canette avec son troue, retourne le
 %   centroide du trou 
@@ -8,6 +8,15 @@ for i=1:length(image)
 F{i} = imfilter(image{i}, ones(4)/16, 'circular');
 F{i} = medfilt2(F{i},[6,6]);
 F{i} = imgradient(F{i});
+%F{i} = imfilter(image{i}, ones(2)/4, 'circular');
+[M,N,~] = size(image{i});
+[v,u]=meshgrid(1:N,1:M);
+H = double(sqrt((u-centreCercle{i}(2)).^2+(v-centreCercle{i}(1)).^2)) < (rayon{i}*0.45+25);
+H2 = double(sqrt((u-centreCercle{i}(2)).^2+(v-centreCercle{i}(1)).^2)) <= (rayon{i}*0.45 +1);
+monCercle = H - H2;
+
+seuilContrast = mean(F{i}(monCercle(:)~=0));
+
 
 %figure(i),imshow(F{i},[]);
 

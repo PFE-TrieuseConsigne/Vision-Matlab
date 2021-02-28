@@ -10,10 +10,10 @@ indexG = 1;
 indexD = 1;
 for i = 1:numel(Image)
     if (i<=(numel(Image)/2)) %Image de gauche
-          fileName = sprintf('imageGauche_%04d.jpg', indexG);   
+          fileName = sprintf('imageDroite_%04d.jpg', indexG);   
           indexG = indexG +1;
     else %Image de droite
-          fileName = sprintf('imageDroite_%04d.jpg', indexD);    
+          fileName = sprintf('imageGauche_%04d.jpg', indexD);    
           indexD = indexD +1;
     end
   imwrite( Image{i}, fileName);

@@ -24,7 +24,7 @@
 clc;
 clear;
 
-
+tic
 
 %Variable que l'on peut modifier
 %nb_image = 1;
@@ -64,7 +64,7 @@ pictureGray = RemoveBackground(pictureGray,centreCercle,rayon);
 %pictureGray = RemoveMiddle(pictureGray,centreCercle,rayon);
 
 %Isolation du troue causé par la goupille
-[centreTrou,filtreHole] = IsolateHole(RemoveMiddle(pictureGray,centreCercle,rayon),20,centreCercle);
+[centreTrou,filtreHole] = IsolateHole(RemoveMiddle(pictureGray,centreCercle,rayon),5,centreCercle);
 
 %Aligmenet de la cannette et centrage
 [pictureGray,filtreHole] = AlignPicture(pictureGray,centreCercle,centreTrou,filtreHole);
@@ -87,3 +87,4 @@ pictureGray = RemoveBackground(pictureGray,centreCercle,rayon);
 %3- Sauvegarde des images
 SaveImage(pictureGray,SaveFile,ProgramFile);
 %3-End
+toc

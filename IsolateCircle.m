@@ -98,7 +98,7 @@ monCentroide{i} = regionprops(imageOutput{i}, 'Centroid').Centroid;
 %7-End
 side = 4;
 %figure(60+i),imshow(imageOutput{i},[]);
-r1 = drawrectangle('Position',[monCentroide{i}(1)-(side/2) ,monCentroide{i}(2)-(side/2) ,side,side],'Color','r');
+%r1 = drawrectangle('Position',[monCentroide{i}(1)-(side/2) ,monCentroide{i}(2)-(side/2) ,side,side],'Color','r');
 
 stats = regionprops(imageOutput{i},'PixelList');
 rayon{i} = max(sqrt((monCentroide{i}(1,1) - stats.PixelList(:,1)).^2+(monCentroide{i}(1,2)-stats.PixelList(:,2)).^2));

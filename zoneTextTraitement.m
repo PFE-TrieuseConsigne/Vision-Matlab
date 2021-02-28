@@ -34,11 +34,11 @@ for i = 1:numel(image)
     imageOutput{i} = imgradient(imageOutput{i});
     %figure(3),imshow(imageOutput{i},[]);
     imageOutput{i} = (imageOutput{i}>seuil);
-    %    figure(4),imshow(imageOutput{i});
+    %figure(4),imshow(imageOutput{i});
     se = strel('disk',2);
     imageOutput{i} = imclose(imageOutput{i},se);
     
-    %        figure(5),imshow(imageOutput{i});
+    %figure(5),imshow(imageOutput{i});
     
     %On élimine les régions trops petites
     stats = regionprops(imageOutput{i}, 'Area', 'PixelList');
@@ -52,7 +52,7 @@ for i = 1:numel(image)
         end 
     end 
         imageOutput{i} = FiltreSP;
-        figure(6),imshow(imageOutput{i});
+        %figure(6),imshow(imageOutput{i});
 end
 end
 
