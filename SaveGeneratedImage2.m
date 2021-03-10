@@ -3,6 +3,10 @@ function [] = SaveGeneratedImage2(GeneratedImage,SaveFile,ProgramFile)
 %Sauvegarde les images dans le dossier "SaveFile"
 %Prend en argument la matrice des images, le répertoire "SaveFile" et le
 %répertoire ProgramFile où le code est sauvegarder
+
+%Sauvegarde seulement les images générées
+
+
 %   Detailed explanation goes here
 
 cd(SaveFile)

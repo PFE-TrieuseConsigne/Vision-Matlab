@@ -1,5 +1,5 @@
 function [imageArray] = GetFiltre(myFolder)
-
+%Fonction qui charge en mémoire les filtre 
 if ~isfolder(myFolder)
   errorMessage = sprintf('Error: The following folder does not exist:\n%s', myFolder);
   uiwait(warndlg(errorMessage));

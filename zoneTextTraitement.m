@@ -1,10 +1,13 @@
 function [imageOutput] = ZoneTextTraitement(image,FiltreBase)
 %ZONETEXTTRAITEMENT Summary of this function goes here
+%Fonction qui fait ressortir les gravures dans la zone de texte
 %   Detailed explanation goes here
 petiteRegion = 45;
-GrosseRegion = 10000;
+%GrosseRegion = 10000;
 indexG = 1;
 indexD = 1;
+%converti les matrices filtre en matrices plus facilement utilisable dans
+%la seconde boucle For
 for i = 1:numel(FiltreBase)
     if(-1==(-1)^i) %Image de gauche
         FiltreG{indexG} = FiltreBase{i};
@@ -30,7 +33,6 @@ for i = 1:numel(image)
     %figure(1),imshow(imageOutput{i});
     imageOutput{i} = medfilt2(imageOutput{i},[6,6]);
     %figure(2),imshow(imageOutput{i});
-
     imageOutput{i} = imgradient(imageOutput{i});
     %figure(3),imshow(imageOutput{i},[]);
     imageOutput{i} = (imageOutput{i}>seuil);

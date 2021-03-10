@@ -1,5 +1,7 @@
 function [pictureOutput] = GenerateTransformedPicture(pictureGray, nbGenerated)
 %GENERATETRANSFORMEDPICTURE Summary of this function goes here
+%Fonction qui génère des images en appliquant les transformations
+%pinCushion et Barrel 
 %   Detailed explanation goes here
 
 pictureOutput = cell([1 length(pictureGray)*nbGenerated]);
