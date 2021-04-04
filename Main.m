@@ -13,13 +13,6 @@
 %picture = Array de toutes les photos
 %pictureGray = Array de toutes les photos en noir et blanc
 
-%***Pour testé le code***
-%nb_image = nombre de photo que l'on veut observer (pour débugger
-%seulement)
-
-%pictureNumber = les numéros des photos observé sélectionné aléatoirement
-%selectedPicture = Les photos sélectionné aléatoirement 
-
 %********MAIN START********
 clc;
 clear;
@@ -38,15 +31,7 @@ FiltreFile = 'C:\Users\sam_p\OneDrive - ETS\PFE\Vision\FiltreZoneText';         
 %load les photos dans un array, un en noir et blanc, l'autre en couleur
 [pictureGray] = GetPictureGray(PictureFile);
 %[pictureGray,picture] = GetPicture(PictureFile);
- 
-
-%Selectionne aléatoirement un nombre (nb_image) de photo pour affichage (pour le
-%débuggage)
-    %[selectedPicture,pictureNumber] = SelectRandomPicture(nb_image,pictureGray);
-%Affiche les images sélectionné aléatoirement
-    %ShowWithSubPlot(selectedPicture,pictureNumber)     
-
-    
+   
 %1-On aligne la canette avec le diamètre extérieur et le ? troue ?    
 %Isolation du diamètre extérieur
 seuilHF = 6;
@@ -60,17 +45,12 @@ SeuilSelEtPoivre = 30000;
 %Enlève le fond (Background)
 pictureGray = RemoveBackground(pictureGray,centreCercle,rayon);
 
-%Enlève le milieu de la cannette
-%pictureGray = RemoveMiddle(pictureGray,centreCercle,rayon);
-
 %Isolation du troue causé par la goupille
 [centreTrou,filtreHole] = IsolateHole(RemoveMiddle(pictureGray,centreCercle,rayon),5,centreCercle);
 
 %Aligmenet de la cannette et centrage
 [pictureGray,filtreHole] = AlignPicture(pictureGray,centreCercle,centreTrou,filtreHole);
 %1-END
-
-
 
 %2- Sachant l'alignement, on isole les parties de droite et gauche où il est écrit "Québec" et "Consignable" 
 %Isolation de la zone de lettrage

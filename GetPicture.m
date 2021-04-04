@@ -1,5 +1,6 @@
 function [pictureGray,imageArray] = GetPicture(myFolder)
-
+%Fonction qui charge en mémoire les images en noir et blanc ET les images
+%en rgb d'origines
 if ~isfolder(myFolder)
   errorMessage = sprintf('Error: The following folder does not exist:\n%s', myFolder);
   uiwait(warndlg(errorMessage));

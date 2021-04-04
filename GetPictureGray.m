@@ -1,5 +1,6 @@
 function [pictureGray] = GetPictureGray(myFolder)
 %GETPICTUREGRAY Summary of this function goes here
+%Fonction qui charge en mémoire les images en noir et blanc
 %   Detailed explanation goes here
 if ~isfolder(myFolder)
   errorMessage = sprintf('Error: The following folder does not exist:\n%s', myFolder);

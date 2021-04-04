@@ -1,4 +1,5 @@
-
+%Fonction qui prend chacun des fichier et les resize selon Xsize et Ysize
+%en vue de l'utilisation du réseau de neuronnes.
 ProgramFile = 'E:\École\ETS\PFE\Vision-Matlab';
 Xsize = 227;
 Ysize = 227;
