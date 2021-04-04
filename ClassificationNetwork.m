@@ -38,7 +38,7 @@ opts = trainingOptions('sgdm', ...
     'LearnRateSchedule', 'none',...
     'InitialLearnRate', .0001,... 
     'MaxEpochs', 20, ...
-    'MiniBatchSize', 128);
+    'MiniBatchSize', 60);
 
 
 convnet = trainNetwork(auimds, layers, opts);
@@ -76,6 +76,26 @@ clear SecondPart
 clear numberArray
 end
 %On calcule les résultats du réseau
-confMat = confusionmat(testDS.Labels, labels);
-confMat = confMat./sum(confMat,2);
-mean(diag(confMat))
+% confMat = confusionmat(testDS.Labels, labels);
+% confMat = confMat./sum(confMat,2);
+% mean(diag(confMat))
+
+%%% matrice de confusion
+[confMat,order] = confusionmat(labels,testDS.Labels);
+%%% calcul de la précision , le rappel (recall) et le F-score
+%%% recall
+for i =1:size(confMat,1)
+    recall(i)=confMat(i,i)/sum(confMat(i,:));
+end
+recall(isnan(recall))=[];
+recall=recall*sum(recall)/size(confMat,1);
+%%% précision
+for i =1:size(confMat,1)
+    precision(i)=confMat(i,i)/sum(confMat(:,i));
+end
+Precision=sum(precision)/size(confMat,1);
+%%% F-score
+F_score=2*Recall*Precision/(Precision+recall); %%F_score=2*1/((1/Precision)+(1/Recall));
+
+
+
