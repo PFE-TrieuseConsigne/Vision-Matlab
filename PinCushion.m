@@ -1,5 +1,6 @@
 function [imageOutput] = PinCushion(I)
 %UNTITLED Summary of this function goes here
+%Fonction qui applique un filtre PinCushion à l'image
 %   Detailed explanation goes here
 
 nrows = size(I,1);

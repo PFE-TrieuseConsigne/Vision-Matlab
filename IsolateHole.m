@@ -11,6 +11,9 @@ F{i} = imgradient(F{i});
 
 %figure(i),imshow(F{i},[]);
 
+%NOTE: Ici on pourrait calculer le seuil de contrast au lieu d'imposer une
+%valeur, comme fait dans la fonction ZoneTextTraitement à la 2eme boucle
+%For
 F{i} = (F{i} < seuilContrast);
 %figure(i+10),imshow(F{i},[]);
 stats = regionprops(F{i}, 'Centroid','pixellist','area');
@@ -42,7 +45,7 @@ stats = regionprops(Filtre,'Centroid');
 monCentroide{i} = stats(1).Centroid;
 side = 4;
 
-
+%On applique le filtre pour éléminer le trou de la cannette
 image{i}(Filtre) = 0;
 imageOutput{i} = image{i};
 %figure(30+i),imshow(imageOutput{i},[]);

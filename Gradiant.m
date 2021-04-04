@@ -1,5 +1,6 @@
 function [F] = Gradiant(image)
 %GRADIANT Summary of this function goes here
+%Fonction inutile, utiliser imgradiant(F) de matlab
 %   Detailed explanation goes here
 hx = [-1 -2 -1 ;
     0 0 0;

@@ -3,6 +3,9 @@ function [] = SaveImage(Image,SaveFile,ProgramFile)
 %Sauvegarde les images dans le dossier "SaveFile"
 %Prend en argument la matrice des images, le répertoire "SaveFile" et le
 %répertoire ProgramFile où le code est sauvegarder
+
+%Cette fonction les sépares en images de droite vs images de gauches
+
 %   Detailed explanation goes here
 
 cd(SaveFile)

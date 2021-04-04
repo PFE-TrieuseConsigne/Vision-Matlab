@@ -1,5 +1,6 @@
 function [imageOutput] = Barrel(I)
 %BARREL Summary of this function goes here
+%Fonction qui applique une transformation BARREL à l'image
 %   Detailed explanation goes here
 
 
